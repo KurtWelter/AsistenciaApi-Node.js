@@ -52,7 +52,11 @@ app.post("/login", async (request, response) => {
   }
 });
 
-//app.post();
+//app.post("/classAtendance", async (request, resonse) => {
+// try {
+//const { date, subject, name } = request.body;
+// } //catch (error) {}
+//});
 
 // const myFunction = async () => {};
 // async function myOtherFunction() {}
