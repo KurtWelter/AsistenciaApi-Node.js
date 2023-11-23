@@ -28,7 +28,7 @@ async function main() {
       const users = await prisma.user.findMany();
 
       const attendanceData = {
-        subject: "mate",
+        subject: "Mate",
         date: new Date(),
       };
 
