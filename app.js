@@ -7,7 +7,7 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const whiteList = ["http://localhost:8100"];
+const whiteList = ["http://localhost:8100"]; //http://localhost:8100
 
 app.use(cors({ origin: whiteList }));
 
