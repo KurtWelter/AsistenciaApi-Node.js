@@ -35,4 +35,5 @@ model ClassAttendance {
   subject        String   @db.VarChar(255)
   //user User @relation(fields: [profesorList], references: [id])
   attendanceList User[]
+  //currentList User[]
 }

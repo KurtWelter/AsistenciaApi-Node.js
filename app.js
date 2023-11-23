@@ -18,6 +18,40 @@ app.listen(PORT, () => {
   console.log("Server Listening on PORT:", PORT);
 });
 
+async function main() {
+  try {
+    const classes = await prisma.classAttendance.findMany();
+    console.log(classes);
+
+    if (classes.length === 0) {
+      console.log("Se ejecuta la query para crear la clase");
+      const users = await prisma.user.findMany();
+
+      const attendanceData = {
+        subject: "mate",
+        date: new Date(),
+      };
+
+      const attendanceDataTwo = {
+        subject: "Programación web",
+        date: new Date(),
+      };
+
+      await prisma.classAttendance.create({
+        data: attendanceData,
+      });
+
+      await prisma.classAttendance.create({
+        data: attendanceDataTwo,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+main();
+
 //nodemon app.js
 
 //Los datos de los Roles
@@ -52,11 +86,34 @@ app.post("/login", async (request, response) => {
   }
 });
 
-//app.post("/classAtendance", async (request, resonse) => {
-// try {
-//const { date, subject, name } = request.body;
-// } //catch (error) {}
-//});
+app.get("/classAttendance", async (request, response) => {
+  try {
+    const classes = await prisma.classAttendance.findMany();
+    return response.status(200).send(classes);
+  } catch (error) {}
+});
+
+app.post("/classAttendance", async (request, response) => {
+  try {
+    const { userId, classId } = request.body;
+
+    const updatedClassAttendance = await prisma.classAttendance.update({
+      where: { id: classId },
+      data: {
+        attendanceList: {
+          connect: { id: userId },
+        },
+      },
+    });
+
+    response.status(200).send(updatedClassAttendance);
+  } catch (error) {
+    console.error(error);
+    response
+      .status(500)
+      .send("Hubo un error al conectar el usuario a la clase.");
+  }
+});
 
 // const myFunction = async () => {};
 // async function myOtherFunction() {}
