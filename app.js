@@ -7,9 +7,12 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const whiteList = ["http://localhost:8100"]; //http://localhost:8100
+const whiteList = [
+  "https://spsgftc7-8100.brs.devtunnels.ms/",
+  "http://localhost:8100",
+]; //http://localhost:8100
 
-app.use(cors({ origin: whiteList }));
+app.use(cors({ origin: whiteList })); //origin: whiteList
 
 app.use(express.json());
 
