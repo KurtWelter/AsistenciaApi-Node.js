@@ -7,12 +7,19 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const whiteList = [
-  "https://spsgftc7-8100.brs.devtunnels.ms/",
-  "http://localhost:8100",
-]; //http://localhost:8100
+const whiteList = ["http://localhost:8100"]; //http://localhost:8100
 
-app.use(cors({ origin: whiteList })); //origin: whiteList
+//app.use(cors({ origin: whiteList })); //origin: whiteList
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*"); // Allow requests from any origin
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Define allowed methods
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  ); // Define allowed headers
+  next();
+});
 
 app.use(express.json());
 
@@ -30,23 +37,23 @@ async function main() {
       console.log("Se ejecuta la query para crear la clase");
       const users = await prisma.user.findMany();
 
-      const attendanceData = {
-        subject: "Mate",
-        date: new Date(),
-      };
+      // const attendanceData = {
+      //   subject: "Mate",
+      //   date: new Date(),
+      // };
 
-      const attendanceDataTwo = {
-        subject: "Programación web",
-        date: new Date(),
-      };
+      // const attendanceDataTwo = {
+      //   subject: "Programación web",
+      //   date: new Date(),
+      // };
 
-      await prisma.classAttendance.create({
-        data: attendanceData,
-      });
+      // await prisma.classAttendance.create({
+      //   data: attendanceData,
+      // });
 
-      await prisma.classAttendance.create({
-        data: attendanceDataTwo,
-      });
+      // await prisma.classAttendance.create({
+      //   data: attendanceDataTwo,
+      // });
     }
   } catch (error) {
     console.log(error);
@@ -74,7 +81,7 @@ app.post("/login", async (request, response) => {
         email,
       },
     });
-
+    console.log(user);
     if (user.password === password) {
       return response.status(200).send(user);
     }
@@ -83,6 +90,7 @@ app.post("/login", async (request, response) => {
       .status(401)
       .send({ data: null, error: "Usuario o contraseña no válida" });
   } catch (error) {
+    console.log(error);
     return response
       .status(500)
       .send({ data: null, error: "Usuario o contraseña no válida" });
